@@ -76,7 +76,16 @@
             flex: 1;
             position: relative;
         }
-        /* 视频标签样式，适配容器 */
+        /* iframe视频适配 */
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* video标签适配 */
         .video-container video {
             width: 100%;
             height: 100%;
@@ -131,7 +140,7 @@
         </div>
 
         <div class="video-box-section">
-            <!-- 第一栏：品牌特点 -->
+            <!-- 第一栏：品牌特点（iframe加载html视频页） -->
             <div class="video-box">
                 <div class="video-container">
                     <iframe 
@@ -139,15 +148,6 @@
                         allowfullscreen="true"
                         allow="autoplay; fullscreen; picture-in-picture"
                         scrolling="no"
-                        style="
-                            position: absolute;
-                            top: -8%;
-                            left: -2%;
-                            width: 104%;
-                            height: 116%;
-                            border: none;
-                            overflow: hidden;
-                        "
                     ></iframe>
                 </div>
                 <div class="content">
@@ -158,23 +158,14 @@
                 </div>
             </div>
 
-            <!-- 第二栏：品牌典故 -->
-            <div class="video-box.reverse">
+            <!-- 第二栏：品牌典故（iframe加载html视频页） -->
+            <div class="video-box reverse">
                 <div class="video-container">
                     <iframe 
                         src="https://willheizi.github.io/shuangnanye-video2/video2.html" 
                         allowfullscreen="true"
                         allow="autoplay; fullscreen; picture-in-picture"
                         scrolling="no"
-                        style="
-                            position: absolute;
-                            top: -8%;
-                            left: -2%;
-                            width: 104%;
-                            height: 116%;
-                            border: none;
-                            overflow: hidden;
-                        "
                     ></iframe>
                 </div>
                 <div class="content">
@@ -185,15 +176,15 @@
                 </div>
             </div>
 
-            <!-- 第三栏：文化传承（修复为video标签） -->
+            <!-- 第三栏：文化传承（统一用iframe加载html视频页） -->
             <div class="video-box">
                 <div class="video-container">
-                    <video 
-                        src="https://willheizi.github.io/shuangnanye-video3/video3.html"
-                        controls
-                        preload="metadata"
-                        playsinline
-                    ></video>
+                    <iframe 
+                        src="https://willheizi.github.io/shuangnanye-video3/video3.html" 
+                        allowfullscreen="true"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        scrolling="no"
+                    ></iframe>
                 </div>
                 <div class="content">
                     <h2>文化传承</h2>
