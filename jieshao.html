@@ -76,6 +76,12 @@
             flex: 1;
             position: relative;
         }
+        /* 视频标签样式，适配容器 */
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .content {
             flex: 1.2;
         }
@@ -153,7 +159,7 @@
             </div>
 
             <!-- 第二栏：品牌典故 -->
-            <div class="video-box reverse">
+            <div class="video-box.reverse">
                 <div class="video-container">
                     <iframe 
                         src="https://willheizi.github.io/shuangnanye-video2/video2.html" 
@@ -179,25 +185,15 @@
                 </div>
             </div>
 
-            <!-- 新增第三栏：文化传承 -->
+            <!-- 第三栏：文化传承（修复为video标签） -->
             <div class="video-box">
                 <div class="video-container">
-                    <!-- 可替换为你的文化传承视频地址 -->
-                    <iframe 
-                        src="https://shuangnanye-1317123617.cos.ap-guangzhou.myqcloud.com/xc.mp4" 
-                        allowfullscreen="true"
-                        allow="autoplay; fullscreen; picture-in-picture"
-                        scrolling="no"
-                        style="
-                            position: absolute;
-                            top: -8%;
-                            left: -2%;
-                            width: 104%;
-                            height: 116%;
-                            border: none;
-                            overflow: hidden;
-                        "
-                    ></iframe>
+                    <video 
+                        src="https://shuangnanye-1317123617.cos.ap-guangzhou.myqcloud.com/xc.mp4"
+                        controls
+                        preload="metadata"
+                        playsinline
+                    ></video>
                 </div>
                 <div class="content">
                     <h2>文化传承</h2>
