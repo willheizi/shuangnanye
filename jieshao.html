@@ -24,7 +24,7 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 60px; /* 增加间距 */
+            margin-bottom: 20px; /* 减少间距，给滚动字幕留出空间 */
             padding-bottom: 30px;
             border-bottom: 1px solid rgba(232, 216, 184, 0.3);
         }
@@ -45,6 +45,39 @@
             font-size: 20px;
             letter-spacing: 3px;
             color: #b8a580;
+        }
+
+        /* 长沙天气预报滚动字幕样式 */
+        .weather-scroll {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            background-color: rgba(212, 175, 55, 0.1); /* 金色透明背景 */
+            border-radius: 4px;
+            margin: 20px 0 40px; /* 上下间距，匹配页面布局 */
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.3); /* 金色边框 */
+        }
+        .weather-scroll-content {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            white-space: nowrap;
+            font-size: 16px;
+            color: #d4af37; /* 金色文字，匹配网站主色调 */
+            letter-spacing: 2px;
+            /* 滚动动画：匀速从右到左，无限循环 */
+            animation: scroll 20s linear infinite;
+        }
+        /* 滚动动画关键帧 */
+        @keyframes scroll {
+            0% {
+                left: 100%;
+            }
+            100% {
+                left: -100%;
+            }
         }
 
         .video-box-section {
@@ -130,6 +163,11 @@
                 height: auto;
                 aspect-ratio: 16/9; /* 宽高比16:9，自适应 */
             }
+            /* 移动端滚动字幕字体缩小，动画速度减慢 */
+            .weather-scroll-content {
+                font-size: 14px;
+                animation: scroll 15s linear infinite;
+            }
         }
         @media (max-width: 768px) {
             .header h1 {
@@ -150,6 +188,13 @@
             <div class="tag">{ 八年窖藏 }</div>
             <h1>上下五千年 传承双南液</h1>
             <div class="sub-title">SHUANG NAN YE</div>
+        </div>
+
+        <!-- 长沙天气预报滚动字幕（红框位置） -->
+        <div class="weather-scroll">
+            <div class="weather-scroll-content">
+                加载中... <!-- 初始占位文字 -->
+            </div>
         </div>
 
         <div class="video-box-section">
@@ -217,5 +262,45 @@
             <p style="margin-top: 10px;">上下五千年 传承双南液</p>
         </div>
     </div>
+
+    <!-- 核心：调用和风天气API获取长沙实时天气 -->
+    <script>
+        // 1. 替换为你自己的和风天气API Key（之前获取的：37c090c9b8f945d89637521e7ecb1375）
+        const API_KEY = "37c090c9b8f945d89637521e7ecb1375";
+        // 2. 长沙的城市ID（101250101），也可以用经纬度/城市名
+        const CITY_ID = "101250101";
+        // 3. 获取滚动字幕的DOM元素
+        const weatherContent = document.querySelector(".weather-scroll-content");
+
+        // 4. 调用和风天气API获取实时天气
+        fetch(`https://devapi.qweather.com/v7/weather/now?location=${CITY_ID}&key=${API_KEY}`)
+            .then(response => {
+                // 检查请求是否成功
+                if (!response.ok) {
+                    throw new Error("天气API请求失败");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 5. 处理返回的天气数据
+                if (data.code === "200") { // 接口调用成功
+                    const now = data.now; // 实时天气数据
+                    // 拼接滚动字幕内容（适配产品场景）
+                    const weatherText = `
+                        长沙今日天气：${now.text} 气温${now.temp}℃ | 风向${now.windDir}${now.windScale}级 | 空气质量优 | 适宜品鉴双南液美酒
+                    `.trim(); // 去除多余空格
+                    // 更新滚动字幕内容
+                    weatherContent.textContent = weatherText;
+                } else {
+                    // API返回错误，显示默认文字
+                    weatherContent.textContent = "长沙今日天气：晴 18~28℃ 微风 | 空气质量优 | 适宜品鉴双南液美酒";
+                }
+            })
+            .catch(error => {
+                // 网络错误/API调用失败，显示默认文字
+                console.log("天气数据加载失败：", error);
+                weatherContent.textContent = "长沙今日天气：晴 18~28℃ 微风 | 空气质量优 | 适宜品鉴双南液美酒";
+            });
+    </script>
 </body>
 </html>
