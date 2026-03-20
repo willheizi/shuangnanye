@@ -248,20 +248,35 @@
         </div>
     </div>
 
-    <!-- 和风天气API获取绵竹市天气 -->
+    <!-- 修复后的和风天气API（使用免费版域名+正确参数） -->
     <script>
-        fetch('https://devapi.qweather.com/v7/weather/now?location=101270602&key=37c0900c9b8f945d89637521e7ecb1375')
+        // 先获取城市坐标（绵竹市：104.2126, 31.3333）
+        fetch('https://geoapi.qweather.com/v2/city/lookup?location=绵竹&key=37c0900c9b8f945d89637521e7ecb1375')
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === '200') {
+                    const lon = data.location[0].lon;
+                    const lat = data.location[0].lat;
+                    // 获取实时天气
+                    return fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=37c0900c9b8f945d89637521e7ecb1375`);
+                } else {
+                    throw new Error('获取城市坐标失败');
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.code === '200') {
                     document.getElementById('temp').textContent = data.now.temp + '°C';
                     document.getElementById('weatherDesc').textContent = data.now.text;
                 } else {
+                    // 降级显示默认天气
                     document.getElementById('temp').textContent = '20°C';
                     document.getElementById('weatherDesc').textContent = '晴';
                 }
             })
             .catch(err => {
+                console.error('天气API错误:', err);
+                // 兜底显示默认天气
                 document.getElementById('temp').textContent = '20°C';
                 document.getElementById('weatherDesc').textContent = '晴';
             });
