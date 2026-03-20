@@ -47,7 +47,7 @@
             color: #b8a580;
         }
 
-        /* 长沙专属滚动天气条 */
+        /* 长沙天气滚动条 */
         .weather-scroll-container {
             background-color: rgba(44, 48, 53, 0.85);
             padding: 12px 25px;
@@ -167,12 +167,12 @@
             <div class="sub-title">SHUANG NAN YE</div>
         </div>
 
-        <!-- 仅显示长沙市天气预报 -->
+        <!-- 长沙市实时天气预报 -->
         <div class="weather-scroll-container">
             <div class="weather-item">
                 <span class="location">📍 长沙市</span>
-                <span class="temp" id="temp">23°C</span>
-                <span class="desc" id="weatherDesc">多云</span>
+                <span class="temp" id="temp">--°C</span>
+                <span class="desc" id="weatherDesc">--</span>
             </div>
         </div>
 
@@ -231,21 +231,5 @@
         </div>
 
         <div class="footer">
-            <p>© 2025 双南液酒业 版权所有</p>
-            <p style="margin-top: 10px;">上下五千年 传承双南液</p>
-        </div>
-    </div>
-
-    <!-- 固定显示长沙市天气（可手动修改温度/天气） -->
-    <script>
-        // 如需修改长沙天气，直接调整以下数值即可
-        const changshaWeather = {
-            temp: "23°C",       // 温度
-            desc: "多云"        // 天气描述
-        };
-        
-        document.getElementById('temp').textContent = changshaWeather.temp;
-        document.getElementById('weatherDesc').textContent = changshaWeather.desc;
-    </script>
-</body>
-</html>
+            <p>© 2025 双南液酒业版权所有</p>
+            <p style="margin-top:
