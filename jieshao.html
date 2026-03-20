@@ -24,7 +24,7 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 60px;
             padding-bottom: 30px;
             border-bottom: 1px solid rgba(232, 216, 184, 0.3);
         }
@@ -46,51 +46,8 @@
             letter-spacing: 3px;
             color: #b8a580;
         }
-
-        /* 自动滚动天气字幕 */
-        .weather-scroll-container {
-            background-color: rgba(44, 48, 53, 0.85);
-            padding: 12px 0;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            margin-bottom: 40px;
-            overflow: hidden;
-            position: relative;
-        }
-        .weather-scroll-content {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            white-space: nowrap;
-            animation: scroll 20s linear infinite;
-            padding: 0 25px;
-        }
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        .weather-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: #e8d8b8;
-        }
-        .weather-item .location {
-            font-size: 18px;
-            font-weight: 500;
-            color: #d4af37;
-        }
-        .weather-item .label {
-            font-size: 16px;
-            color: #b8a580;
-        }
-        .weather-item .value {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
         .video-box-section {
-            margin: 40px 0;
+            margin: 80px 0;
             display: flex;
             flex-direction: column;
             gap: 60px;
@@ -146,9 +103,6 @@
             .video-box, .video-box.reverse {
                 flex-direction: column;
             }
-            .weather-scroll-content {
-                animation: scroll 30s linear infinite;
-            }
         }
         @media (max-width: 768px) {
             .header h1 {
@@ -157,15 +111,6 @@
             .video-container {
                 height: auto;
                 aspect-ratio: 1280 / 544;
-            }
-            .weather-item .location {
-                font-size: 16px;
-            }
-            .weather-item .label {
-                font-size: 14px;
-            }
-            .weather-item .value {
-                font-size: 16px;
             }
         }
     </style>
@@ -176,60 +121,6 @@
             <div class="tag">{ 八年窖藏 }</div>
             <h1>上下五千年 传承双南液</h1>
             <div class="sub-title">SHUANG NAN YE</div>
-        </div>
-
-        <!-- 自动滚动天气字幕（长沙完整天气） -->
-        <div class="weather-scroll-container">
-            <div class="weather-scroll-content">
-                <div class="weather-item">
-                    <span class="location">📍 长沙市</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">最高温：</span>
-                    <span class="value" id="tempMax">--°C</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">最低温：</span>
-                    <span class="value" id="tempMin">--°C</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">当前温：</span>
-                    <span class="value" id="tempNow">--°C</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">风速：</span>
-                    <span class="value" id="windSpeed">--</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">天气：</span>
-                    <span class="value" id="weatherDesc">--</span>
-                </div>
-                
-                <!-- 重复内容，让滚动更流畅 -->
-                <div class="weather-item">
-                    <span class="location">📍 长沙市</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">最高温：</span>
-                    <span class="value" id="tempMax2">--°C</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">最低温：</span>
-                    <span class="value" id="tempMin2">--°C</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">当前温：</span>
-                    <span class="value" id="tempNow2">--°C</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">风速：</span>
-                    <span class="value" id="windSpeed2">--</span>
-                </div>
-                <div class="weather-item">
-                    <span class="label">天气：</span>
-                    <span class="value" id="weatherDesc2">--</span>
-                </div>
-            </div>
         </div>
 
         <div class="video-box-section">
@@ -287,73 +178,9 @@
         </div>
 
         <div class="footer">
-            <p>© 2025 双南液酒业版权所有</p>
+            <p>© 2025 双南液酒业 版权所有</p>
             <p style="margin-top: 10px;">上下五千年 传承双南液</p>
         </div>
     </div>
-
-    <!-- 调用公开天气接口获取长沙完整天气信息 -->
-    <script>
-        // 公开免费的天气接口（长沙市，返回完整数据）
-        const weatherApiUrl = 'https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=长沙市';
-
-        // 兜底默认数据
-        const defaultWeather = {
-            tempMax: '28',
-            tempMin: '18',
-            tempNow: '23',
-            windSpeed: '2级',
-            weatherDesc: '多云'
-        };
-
-        // 发起请求获取天气数据
-        fetch(weatherApiUrl)
-            .then(response => {
-                if (!response.ok) throw new Error('接口请求失败');
-                return response.json();
-            })
-            .then(data => {
-                // 解析完整天气数据
-                let weatherData = defaultWeather;
-                if (data && data.data && data.data[0]) {
-                    weatherData = {
-                        tempMax: data.data[0].tem1 || defaultWeather.tempMax, // 最高温
-                        tempMin: data.data[0].tem2 || defaultWeather.tempMin, // 最低温
-                        tempNow: data.data[0].tem || defaultWeather.tempNow,  // 当前温
-                        windSpeed: data.data[0].win_speed || defaultWeather.windSpeed, // 风速
-                        weatherDesc: data.data[0].wea || defaultWeather.weatherDesc // 天气描述
-                    };
-                }
-
-                // 更新页面显示（主内容）
-                document.getElementById('tempMax').textContent = weatherData.tempMax + '°C';
-                document.getElementById('tempMin').textContent = weatherData.tempMin + '°C';
-                document.getElementById('tempNow').textContent = weatherData.tempNow + '°C';
-                document.getElementById('windSpeed').textContent = weatherData.windSpeed;
-                document.getElementById('weatherDesc').textContent = weatherData.weatherDesc;
-
-                // 更新重复内容（滚动流畅性）
-                document.getElementById('tempMax2').textContent = weatherData.tempMax + '°C';
-                document.getElementById('tempMin2').textContent = weatherData.tempMin + '°C';
-                document.getElementById('tempNow2').textContent = weatherData.tempNow + '°C';
-                document.getElementById('windSpeed2').textContent = weatherData.windSpeed;
-                document.getElementById('weatherDesc2').textContent = weatherData.weatherDesc;
-            })
-            .catch(err => {
-                console.error('天气接口错误:', err);
-                // 使用兜底数据
-                document.getElementById('tempMax').textContent = defaultWeather.tempMax + '°C';
-                document.getElementById('tempMin').textContent = defaultWeather.tempMin + '°C';
-                document.getElementById('tempNow').textContent = defaultWeather.tempNow + '°C';
-                document.getElementById('windSpeed').textContent = defaultWeather.windSpeed;
-                document.getElementById('weatherDesc').textContent = defaultWeather.weatherDesc;
-
-                document.getElementById('tempMax2').textContent = defaultWeather.tempMax + '°C';
-                document.getElementById('tempMin2').textContent = defaultWeather.tempMin + '°C';
-                document.getElementById('tempNow2').textContent = defaultWeather.tempNow + '°C';
-                document.getElementById('windSpeed2').textContent = defaultWeather.windSpeed;
-                document.getElementById('weatherDesc2').textContent = defaultWeather.weatherDesc;
-            });
-    </script>
 </body>
 </html>
