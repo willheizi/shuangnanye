@@ -18,13 +18,13 @@
             overflow-x: hidden;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px; /* 加宽容器避免挤压 */
             margin: 0 auto;
             padding: 40px 20px;
         }
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px; /* 增加间距 */
             padding-bottom: 30px;
             border-bottom: 1px solid rgba(232, 216, 184, 0.3);
         }
@@ -48,85 +48,98 @@
         }
 
         .video-box-section {
-            margin: 40px 0;
+            margin: 60px 0;
             display: flex;
             flex-direction: column;
-            gap: 60px;
+            gap: 80px; /* 增大模块间距 */
         }
         .video-box {
             background-color: rgba(44, 48, 53, 0.85);
-            padding: 40px;
+            padding: 50px; /* 增加内边距 */
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             display: flex;
-            align-items: center;
-            gap: 60px;
+            align-items: stretch; /* 改为stretch，让子元素等高 */
+            gap: 70px; /* 增大视频和文字间距 */
+            width: 100%; /* 强制占满容器 */
         }
         .video-box.reverse {
             flex-direction: row-reverse;
         }
+        /* 视频容器：固定宽高比，统一尺寸 */
         .video-container {
-            width: 1280px;
-            max-width: 100%;
-            height: 544px;
+            flex: 0 0 600px; /* 固定宽度，不伸缩 */
+            height: 330px; /* 统一高度 */
             background-color: #1a1a1a;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            flex: 1;
             position: relative;
         }
-        /* iframe视频适配 */
+        /* 强制iframe全屏填充容器，统一所有视频样式 */
         .video-container iframe {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: none;
+            transform: none !important; /* 清除所有偏移 */
         }
-        /* video标签适配 */
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        /* 文字内容区：自适应剩余宽度 */
         .content {
-            flex: 1.2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直居中 */
+            padding: 10px 0;
         }
         .content h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 30px;
+            margin-bottom: 25px;
             color: #d4af37;
             letter-spacing: 2px;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             border-bottom: 1px solid rgba(212, 175, 55, 0.5);
         }
         .content p {
-            font-size: 16px;
-            line-height: 2;
+            font-size: 17px;
+            line-height: 2.2;
             color: #e0d0b0;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         .footer {
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0 40px;
             border-top: 1px solid rgba(232, 216, 184, 0.2);
             color: #b8a580;
             font-size: 14px;
+            margin-top: 40px;
         }
-        @media (max-width: 992px) {
-            .video-box, .video-box.reverse {
-                flex-direction: column;
+
+        /* 响应式适配：移动端堆叠显示 */
+        @media (max-width: 1200px) {
+            .video-box {
+                flex-direction: column !important; /* 强制堆叠 */
+                gap: 40px;
+                padding: 40px;
+            }
+            .video-container {
+                flex: 0 0 auto;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9; /* 宽高比16:9，自适应 */
             }
         }
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 32px;
+                font-size: 36px;
             }
-            .video-container {
-                height: auto;
-                aspect-ratio: 1280 / 544;
+            .content h2 {
+                font-size: 26px;
+            }
+            .content p {
+                font-size: 16px;
             }
         }
     </style>
@@ -140,7 +153,7 @@
         </div>
 
         <div class="video-box-section">
-            <!-- 第一栏：品牌特点（iframe加载html视频页） -->
+            <!-- 第一栏：品牌特点 -->
             <div class="video-box">
                 <div class="video-container">
                     <iframe 
@@ -158,7 +171,7 @@
                 </div>
             </div>
 
-            <!-- 第二栏：品牌典故（iframe加载html视频页） -->
+            <!-- 第二栏：品牌典故（修复reverse样式） -->
             <div class="video-box reverse">
                 <div class="video-container">
                     <iframe 
@@ -176,7 +189,7 @@
                 </div>
             </div>
 
-            <!-- 第三栏：文化传承（统一用iframe加载html视频页） -->
+            <!-- 第三栏：文化传承（统一样式） -->
             <div class="video-box">
                 <div class="video-container">
                     <iframe 
