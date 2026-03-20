@@ -47,28 +47,45 @@
             color: #b8a580;
         }
 
-        /* 仅保留天气预报栏 */
-        .weather-bar {
+        /* 滚动天气条 */
+        .weather-scroll-bar {
             background-color: rgba(44, 48, 53, 0.85);
             padding: 12px 25px;
             border-radius: 8px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             margin-bottom: 40px;
-            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #2c3035;
+        }
+        .weather-scroll-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .weather-scroll-bar::-webkit-scrollbar-track {
+            background: #2c3035;
+            border-radius: 4px;
+        }
+        .weather-scroll-bar::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+        .weather-info {
+            display: inline-flex;
             align-items: center;
             gap: 15px;
             color: #e8d8b8;
         }
-        .weather-bar .location {
+        .weather-info .location {
             font-size: 18px;
             font-weight: 500;
             color: #d4af37;
         }
-        .weather-bar .temp {
+        .weather-info .temp {
             font-size: 24px;
             font-weight: 600;
         }
-        .weather-bar .desc {
+        .weather-info .desc {
             font-size: 16px;
             color: #b8a580;
         }
@@ -150,11 +167,13 @@
             <div class="sub-title">SHUANG NAN YE</div>
         </div>
 
-        <!-- 仅保留天气预报栏（IP定位） -->
-        <div class="weather-bar">
-            <span class="location" id="location">📍 定位中...</span>
-            <span class="temp" id="temp">--°C</span>
-            <span class="desc" id="weatherDesc">--</span>
+        <!-- 滚动天气条 -->
+        <div class="weather-scroll-bar">
+            <div class="weather-info">
+                <span class="location" id="location">📍 定位中...</span>
+                <span class="temp" id="temp">--°C</span>
+                <span class="desc" id="weatherDesc">--</span>
+            </div>
         </div>
 
         <div class="video-box-section">
@@ -217,36 +236,38 @@
         </div>
     </div>
 
-    <!-- IP定位 + 天气预报 -->
+    <!-- 修复后的IP定位+天气预报 -->
     <script>
-        // 1. 通过IP获取访问者位置
-        fetch('https://ipapi.co/json/')
-            .then(res => res.json())
-            .then(ipData => {
-                const city = ipData.city || '绵竹市';
-                const lat = ipData.latitude;
-                const lon = ipData.longitude;
-                document.getElementById('location').textContent = `📍 ${city}`;
+        // 优先使用更稳定的IP定位服务
+        Promise.all([
+            fetch('https://ipapi.co/json/').then(res => res.json()),
+            fetch('https://api.ip.sb/geoip').then(res => res.json())
+        ]).then(results => {
+            // 取两个接口的城市信息，优先取第一个有效结果
+            const ipData = results[0] || results[1];
+            const city = ipData.city || '绵竹市';
+            const lat = ipData.latitude || 31.3333;
+            const lon = ipData.longitude || 104.2126;
+            
+            document.getElementById('location').textContent = `📍 ${city}`;
 
-                // 2. 根据经纬度获取天气
-                return fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=37c0900c9b8f945d89637521e7ecb1375`);
-            })
-            .then(res => res.json())
-            .then(weatherData => {
-                if (weatherData.code === '200') {
-                    document.getElementById('temp').textContent = weatherData.now.temp + '°C';
-                    document.getElementById('weatherDesc').textContent = weatherData.now.text;
-                } else {
-                    throw new Error('天气获取失败');
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                // 兜底显示默认值
-                document.getElementById('location').textContent = '📍 绵竹市';
-                document.getElementById('temp').textContent = '20°C';
-                document.getElementById('weatherDesc').textContent = '晴';
-            });
+            // 获取天气
+            return fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=37c0900c9b8f945d89637521e7ecb1375`);
+        }).then(res => res.json())
+          .then(weatherData => {
+              if (weatherData.code === '200') {
+                  document.getElementById('temp').textContent = weatherData.now.temp + '°C';
+                  document.getElementById('weatherDesc').textContent = weatherData.now.text;
+              } else {
+                  throw new Error('天气API返回异常');
+              }
+          }).catch(err => {
+              console.error('定位/天气获取失败:', err);
+              // 兜底显示绵竹市默认天气
+              document.getElementById('location').textContent = '📍 绵竹市';
+              document.getElementById('temp').textContent = '20°C';
+              document.getElementById('weatherDesc').textContent = '晴';
+          });
     </script>
 </body>
 </html>
