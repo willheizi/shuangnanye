@@ -47,50 +47,30 @@
             color: #b8a580;
         }
 
-        /* 红框区域：天气+本地事件 */
-        .weather-event-bar {
+        /* 仅保留天气预报栏 */
+        .weather-bar {
             background-color: rgba(44, 48, 53, 0.85);
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 8px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             margin-bottom: 40px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .weather-info {
-            display: flex;
-            align-items: center;
             gap: 15px;
             color: #e8d8b8;
         }
-        .weather-info .location {
+        .weather-bar .location {
             font-size: 18px;
             font-weight: 500;
             color: #d4af37;
         }
-        .weather-info .temp {
+        .weather-bar .temp {
             font-size: 24px;
             font-weight: 600;
         }
-        .weather-info .desc {
+        .weather-bar .desc {
             font-size: 16px;
             color: #b8a580;
-        }
-        .local-events {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: #e8d8b8;
-        }
-        .local-events .event-item {
-            font-size: 16px;
-            padding: 5px 15px;
-            background-color: rgba(212, 175, 55, 0.1);
-            border-radius: 4px;
-            border-left: 3px solid #d4af37;
         }
 
         .video-box-section {
@@ -150,10 +130,6 @@
             .video-box, .video-box.reverse {
                 flex-direction: column;
             }
-            .weather-event-bar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
         }
         @media (max-width: 768px) {
             .header h1 {
@@ -174,18 +150,11 @@
             <div class="sub-title">SHUANG NAN YE</div>
         </div>
 
-        <!-- 红框区域：本地天气预报 + 本地事件 -->
-        <div class="weather-event-bar">
-            <div class="weather-info">
-                <span class="location">📍 绵竹市</span>
-                <span class="temp" id="temp">--°C</span>
-                <span class="desc" id="weatherDesc">--</span>
-            </div>
-            <div class="local-events">
-                <div class="event-item">📅 本周六：双南液品鉴会</div>
-                <div class="event-item">🍶 新品「双南唐」上市</div>
-                <div class="event-item">🏮 春季窖藏开放日</div>
-            </div>
+        <!-- 仅保留天气预报栏（IP定位） -->
+        <div class="weather-bar">
+            <span class="location" id="location">📍 定位中...</span>
+            <span class="temp" id="temp">--°C</span>
+            <span class="desc" id="weatherDesc">--</span>
         </div>
 
         <div class="video-box-section">
@@ -248,35 +217,33 @@
         </div>
     </div>
 
-    <!-- 修复后的和风天气API（使用免费版域名+正确参数） -->
+    <!-- IP定位 + 天气预报 -->
     <script>
-        // 先获取城市坐标（绵竹市：104.2126, 31.3333）
-        fetch('https://geoapi.qweather.com/v2/city/lookup?location=绵竹&key=37c0900c9b8f945d89637521e7ecb1375')
-            .then(response => response.json())
-            .then(data => {
-                if (data.code === '200') {
-                    const lon = data.location[0].lon;
-                    const lat = data.location[0].lat;
-                    // 获取实时天气
-                    return fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=37c0900c9b8f945d89637521e7ecb1375`);
-                } else {
-                    throw new Error('获取城市坐标失败');
-                }
+        // 1. 通过IP获取访问者位置
+        fetch('https://ipapi.co/json/')
+            .then(res => res.json())
+            .then(ipData => {
+                const city = ipData.city || '绵竹市';
+                const lat = ipData.latitude;
+                const lon = ipData.longitude;
+                document.getElementById('location').textContent = `📍 ${city}`;
+
+                // 2. 根据经纬度获取天气
+                return fetch(`https://devapi.qweather.com/v7/weather/now?location=${lon},${lat}&key=37c0900c9b8f945d89637521e7ecb1375`);
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.code === '200') {
-                    document.getElementById('temp').textContent = data.now.temp + '°C';
-                    document.getElementById('weatherDesc').textContent = data.now.text;
+            .then(res => res.json())
+            .then(weatherData => {
+                if (weatherData.code === '200') {
+                    document.getElementById('temp').textContent = weatherData.now.temp + '°C';
+                    document.getElementById('weatherDesc').textContent = weatherData.now.text;
                 } else {
-                    // 降级显示默认天气
-                    document.getElementById('temp').textContent = '20°C';
-                    document.getElementById('weatherDesc').textContent = '晴';
+                    throw new Error('天气获取失败');
                 }
             })
             .catch(err => {
-                console.error('天气API错误:', err);
-                // 兜底显示默认天气
+                console.error(err);
+                // 兜底显示默认值
+                document.getElementById('location').textContent = '📍 绵竹市';
                 document.getElementById('temp').textContent = '20°C';
                 document.getElementById('weatherDesc').textContent = '晴';
             });
