@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>双南液 - 上下五千年 传承双南液</title>
     <style>
         * {
@@ -45,7 +46,6 @@
             letter-spacing: 3px;
             color: #b8a580;
         }
-        /* 核心：视频容器（红框位置） */
         .video-box-section {
             margin: 80px 0;
             display: flex;
@@ -64,7 +64,6 @@
         .video-box.reverse {
             flex-direction: row-reverse;
         }
-        /* 视频容器 - 固定1280×544分辨率 */
         .video-container {
             width: 1280px;
             max-width: 100%;
@@ -75,14 +74,12 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             flex: 1;
         }
-        .video-container video,
         .video-container iframe {
             width: 100%;
             height: 100%;
-            object-fit: cover;
             border: none;
+            display: block;
         }
-        /* 文字内容区 */
         .content {
             flex: 1.2;
         }
@@ -107,7 +104,6 @@
             color: #b8a580;
             font-size: 14px;
         }
-        /* 响应式适配 */
         @media (max-width: 992px) {
             .video-box, .video-box.reverse {
                 flex-direction: column;
@@ -119,31 +115,27 @@
             }
             .video-container {
                 height: auto;
-                aspect-ratio: 1280 / 544; /* 保持1280×544比例 */
+                aspect-ratio: 1280 / 544;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 头部区域（无图片） -->
         <div class="header">
             <div class="tag">{ 八年窖藏 }</div>
             <h1>上下五千年 传承双南液</h1>
             <div class="sub-title">SHUANG NAN YE</div>
         </div>
 
-        <!-- 第一个视频区域（对应第一个红框） -->
         <div class="video-box-section">
             <div class="video-box">
                 <div class="video-container">
-                    <!-- 方案1：若为视频文件，用video标签（推荐） -->
-                    <!-- <video src="https://willheizi.github.io/shuangnanye-video/video.mp4" controls preload="metadata" playsinline>
-                        您的浏览器不支持视频播放，请更换浏览器重试。
-                    </video> -->
-                    
-                    <!-- 方案2：若为HTML页面，用iframe标签 -->
-                    <iframe src="https://willheizi.github.io/shuangnanye-video/video.html" allowfullscreen></iframe>
+                    <iframe 
+                        src="https://willheizi.github.io/shuangnanye-video/video.html" 
+                        allowfullscreen="true"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                    ></iframe>
                 </div>
                 <div class="content">
                     <h2>品牌特点</h2>
@@ -153,16 +145,13 @@
                 </div>
             </div>
 
-            <!-- 第二个视频区域（对应第二个红框） -->
             <div class="video-box reverse">
                 <div class="video-container">
-                    <!-- 方案1：若为视频文件，用video标签（推荐） -->
-                    <!-- <video src="https://willheizi.github.io/shuangnanye-video2/video2.mp4" controls preload="metadata" playsinline>
-                        您的浏览器不支持视频播放，请更换浏览器重试。
-                    </video> -->
-                    
-                    <!-- 方案2：若为HTML页面，用iframe标签 -->
-                    <iframe src="https://willheizi.github.io/shuangnanye-video2/video2.html" allowfullscreen></iframe>
+                    <iframe 
+                        src="https://willheizi.github.io/shuangnanye-video2/video2.html" 
+                        allowfullscreen="true"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                    ></iframe>
                 </div>
                 <div class="content">
                     <h2>品牌典故</h2>
@@ -173,7 +162,6 @@
             </div>
         </div>
 
-        <!-- 底部区域 -->
         <div class="footer">
             <p>© 2025 双南液酒业 版权所有</p>
             <p style="margin-top: 10px;">上下五千年 传承双南液</p>
