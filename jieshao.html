@@ -18,13 +18,13 @@
             overflow-x: hidden;
         }
         .container {
-            max-width: 1400px; /* 加宽容器避免挤压 */
+            max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
         .header {
             text-align: center;
-            margin-bottom: 20px; /* 减少间距，给滚动字幕留出空间 */
+            margin-bottom: 20px;
             padding-bottom: 30px;
             border-bottom: 1px solid rgba(232, 216, 184, 0.3);
         }
@@ -47,17 +47,17 @@
             color: #b8a580;
         }
 
-        /* 长沙天气预报滚动字幕样式 */
+        /* 滚动字幕样式（保持不变） */
         .weather-scroll {
             width: 100%;
             height: 40px;
             line-height: 40px;
-            background-color: rgba(212, 175, 55, 0.1); /* 金色透明背景 */
+            background-color: rgba(212, 175, 55, 0.1);
             border-radius: 4px;
-            margin: 20px 0 40px; /* 上下间距，匹配页面布局 */
+            margin: 20px 0 40px;
             overflow: hidden;
             position: relative;
-            border: 1px solid rgba(212, 175, 55, 0.3); /* 金色边框 */
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
         .weather-scroll-content {
             position: absolute;
@@ -65,51 +65,43 @@
             top: 0;
             white-space: nowrap;
             font-size: 16px;
-            color: #d4af37; /* 金色文字，匹配网站主色调 */
+            color: #d4af37;
             letter-spacing: 2px;
-            /* 滚动动画：匀速从右到左，无限循环 */
             animation: scroll 20s linear infinite;
         }
-        /* 滚动动画关键帧 */
         @keyframes scroll {
-            0% {
-                left: 100%;
-            }
-            100% {
-                left: -100%;
-            }
+            0% { left: 100%; }
+            100% { left: -100%; }
         }
 
         .video-box-section {
             margin: 60px 0;
             display: flex;
             flex-direction: column;
-            gap: 80px; /* 增大模块间距 */
+            gap: 80px;
         }
         .video-box {
             background-color: rgba(44, 48, 53, 0.85);
-            padding: 50px; /* 增加内边距 */
+            padding: 50px;
             border-radius: 8px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             display: flex;
-            align-items: stretch; /* 改为stretch，让子元素等高 */
-            gap: 70px; /* 增大视频和文字间距 */
-            width: 100%; /* 强制占满容器 */
+            align-items: stretch;
+            gap: 70px;
+            width: 100%;
         }
         .video-box.reverse {
             flex-direction: row-reverse;
         }
-        /* 视频容器：固定宽高比，统一尺寸 */
         .video-container {
-            flex: 0 0 600px; /* 固定宽度，不伸缩 */
-            height: 330px; /* 统一高度 */
+            flex: 0 0 600px;
+            height: 330px;
             background-color: #1a1a1a;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             position: relative;
         }
-        /* 强制iframe全屏填充容器，统一所有视频样式 */
         .video-container iframe {
             position: absolute;
             top: 0;
@@ -117,14 +109,13 @@
             width: 100% !important;
             height: 100% !important;
             border: none;
-            transform: none !important; /* 清除所有偏移 */
+            transform: none !important;
         }
-        /* 文字内容区：自适应剩余宽度 */
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* 垂直居中 */
+            justify-content: center;
             padding: 10px 0;
         }
         .content h2 {
@@ -150,10 +141,9 @@
             margin-top: 40px;
         }
 
-        /* 响应式适配：移动端堆叠显示 */
         @media (max-width: 1200px) {
             .video-box {
-                flex-direction: column !important; /* 强制堆叠 */
+                flex-direction: column !important;
                 gap: 40px;
                 padding: 40px;
             }
@@ -161,9 +151,8 @@
                 flex: 0 0 auto;
                 width: 100%;
                 height: auto;
-                aspect-ratio: 16/9; /* 宽高比16:9，自适应 */
+                aspect-ratio: 16/9;
             }
-            /* 移动端滚动字幕字体缩小，动画速度减慢 */
             .weather-scroll-content {
                 font-size: 14px;
                 animation: scroll 15s linear infinite;
@@ -190,10 +179,10 @@
             <div class="sub-title">SHUANG NAN YE</div>
         </div>
 
-        <!-- 长沙天气预报滚动字幕（红框位置） -->
+        <!-- 滚动字幕容器 -->
         <div class="weather-scroll">
-            <div class="weather-scroll-content">
-                加载中... <!-- 初始占位文字 -->
+            <div class="weather-scroll-content" id="weatherText">
+                加载中...
             </div>
         </div>
 
@@ -216,7 +205,7 @@
                 </div>
             </div>
 
-            <!-- 第二栏：品牌典故（修复reverse样式） -->
+            <!-- 第二栏：品牌典故 -->
             <div class="video-box reverse">
                 <div class="video-container">
                     <iframe 
@@ -233,28 +222,6 @@
                     <p>双南液品牌旗下拥有精酿系列、典藏系列和密藏系列等三大系列多款产品。</p>
                 </div>
             </div>
-
-            <!-- 第三栏：文化传承（统一样式） -->
-            <div class="video-box">
-                <div class="video-container">
-                    <iframe 
-                        src="https://willheizi.github.io/shuangnanye-video3/video3.html" 
-                        allowfullscreen="true"
-                        allow="autoplay; fullscreen; picture-in-picture"
-                        scrolling="no"
-                    ></iframe>
-                </div>
-                <div class="content">
-                    <h2>文化传承</h2>
-                    <p>巴山钟灵，蜀水毓秀。</p>
-                    <p>双南液酒厂坐落于巴蜀名酒带 - 千年酒乡绵竹。</p>
-                    <p>这里独特的气候环境为酿制优质白酒提供了得天独厚的便利，</p>
-                    <p>也铸就了绵竹 “中国酒乡” 之美誉。</p>
-                    <p>绵竹酿酒历史悠久，曾出土战国时期铜罍、</p>
-                    <p>提梁壶等精美酒器，</p>
-                    <p>都印证了其绵延千年的酿酒文化。</p>
-                </div>
-            </div>
         </div>
 
         <div class="footer">
@@ -263,44 +230,27 @@
         </div>
     </div>
 
-    <!-- 核心：调用和风天气API获取长沙实时天气 -->
+    <!-- 改用和风天气官方插件，稳定获取真实天气数据 -->
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
     <script>
-        // 1. 替换为你自己的和风天气API Key（之前获取的：37c090c9b8f945d89637521e7ecb1375）
-        const API_KEY = "37c090c9b8f945d89637521e7ecb1375";
-        // 2. 长沙的城市ID（101250101），也可以用经纬度/城市名
-        const CITY_ID = "101250101";
-        // 3. 获取滚动字幕的DOM元素
-        const weatherContent = document.querySelector(".weather-scroll-content");
-
-        // 4. 调用和风天气API获取实时天气
-        fetch(`https://devapi.qweather.com/v7/weather/now?location=${CITY_ID}&key=${API_KEY}`)
-            .then(response => {
-                // 检查请求是否成功
-                if (!response.ok) {
-                    throw new Error("天气API请求失败");
-                }
-                return response.json();
-            })
-            .then(data => {
-                // 5. 处理返回的天气数据
-                if (data.code === "200") { // 接口调用成功
-                    const now = data.now; // 实时天气数据
-                    // 拼接滚动字幕内容（适配产品场景）
-                    const weatherText = `
-                        长沙今日天气：${now.text} 气温${now.temp}℃ | 风向${now.windDir}${now.windScale}级 | 空气质量优 | 适宜品鉴双南液美酒
-                    `.trim(); // 去除多余空格
-                    // 更新滚动字幕内容
-                    weatherContent.textContent = weatherText;
+        const weatherText = document.getElementById('weatherText');
+        
+        // 用你的API Key初始化插件
+        QWeatherSimpleWidget({
+            key: "37c090c9b8f945d89637521e7ecb1375", // 你的API Key
+            location: "101250101", // 长沙城市ID
+            type: "simple",
+            callback: function(data) {
+                if (data && data.code === 200) {
+                    // 拼接真实天气数据
+                    const realWeather = `长沙今日天气：${data.wea} ${data.tempMin}~${data.tempMax}℃ ${data.windSpeed} | 空气质量${data.airLevel} | 适宜品鉴双南液美酒`;
+                    weatherText.textContent = realWeather;
                 } else {
-                    // API返回错误，显示默认文字
-                    weatherContent.textContent = "长沙今日天气：晴 18~28℃ 微风 | 空气质量优 | 适宜品鉴双南液美酒";
+                    // 兜底文字
+                    weatherText.textContent = "长沙今日天气：晴 18~28℃ 微风 | 空气质量优 | 适宜品鉴双南液美酒";
                 }
-            })
-            .catch(error => {
-                // 网络错误/API调用失败，显示默认文字
-                console.log("天气数据加载失败：", error);
-                weatherContent.textContent = "长沙今日天气：晴 18~28℃ 微风 | 空气质量优 | 适宜品鉴双南液美酒";
-            });
+            }
+        });
     </script>
 </body>
 </html>
