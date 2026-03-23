@@ -28,23 +28,12 @@
             padding-bottom: 30px;
             border-bottom: 1px solid rgba(232, 216, 184, 0.3);
         }
-        .header .tag {
-            font-size: 18px;
-            letter-spacing: 4px;
-            color: #d4af37;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 48px;
-            font-weight: 500;
-            letter-spacing: 8px;
-            margin-bottom: 15px;
-            color: #e8d8b8;
-        }
-        .header .sub-title {
-            font-size: 20px;
-            letter-spacing: 3px;
-            color: #b8a580;
+        /* 替换为图片后，保持居中与原有视觉比例 */
+        .header img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         .video-box-section {
@@ -132,9 +121,6 @@
             }
         }
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 36px;
-            }
             .content h2 {
                 font-size: 26px;
             }
@@ -147,9 +133,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="tag">{ 八年窖藏 }</div>
-            <h1>上下五千年 传承双南液</h1>
-            <div class="sub-title">SHUANG NAN YE</div>
+            <!-- 红框内容替换为图片，使用GitHub Raw直链 -->
+            <img src="https://raw.githubusercontent.com/willheizi/shuangnanye/b3351f4edf3528facfb634ad306c1122f4305718/shuangnan.png" alt="上下五千年 传承双南液">
         </div>
 
         <div class="video-box-section">
